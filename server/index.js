@@ -17,7 +17,20 @@ app.use(express.json());    //this gives us access to req.body and the json data
 
 // Create a todo -> C
 app.post("/todos", async (req, res) => {
-    
+    try {
+
+        // Get data from client side to put into db -> use the req.body
+        // req.body will send the JSON data we can use
+        const {description} = req.body;
+        // adds new todo AND returns all todos
+        const newTodo = await pool.query(`INSERT INTO perntodo (description, status) VALUES (${description}, 'NEW') RETURNING *`);
+
+        // return the new todo as JSON
+        res.json(newTodo.rows[0]);
+
+    } catch (e) {
+        console.error(e.message);
+    }
 });
 
 // get all todos -> R
