@@ -22,7 +22,8 @@ export function InputTodo() {
                 body: JSON.stringify(body)
             });
 
-            console.log(response);  //DEBUG: checking it works
+            // once new todo is sent, refresh to show updated todo list
+            window.location = "/";
 
         } catch (e) {
             console.error(e.message);
