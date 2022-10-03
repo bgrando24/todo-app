@@ -15,6 +15,11 @@ app.use(express.json());    //this gives us access to req.body and the json data
 
 // ###ROUTES### //
 
+// test route
+app.get('/', (req, res) => {
+    res.send("Hello!");
+});
+
 // Create a todo -> C
 app.post("/todos", async (req, res) => {
     try {
