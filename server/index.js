@@ -27,8 +27,12 @@ app.post("/todos", async (req, res) => {
         // Get data from client side to put into db -> use the req.body
         // req.body will send the JSON data we can use
         const {description} = req.body;
+
         // adds new todo AND returns all todos
-        const newTodo = await pool.query(`INSERT INTO perntodo (description, status) VALUES (${description}, 'NEW') RETURNING *`);
+        const newTodo = await pool.query(`INSERT INTO perntodo (description, status) VALUES ('${description}', 'NEW') RETURNING *`);
+
+        // Logging outcome
+        console.log(`Added new todo to database: "${description}"`);
 
         // return the new todo as JSON
         res.json(newTodo.rows[0]);
