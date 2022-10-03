@@ -1,9 +1,19 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { EditTodo } from "./EditTodo";
 
 export function ListTodos() {
 
     // component state for storing fetched todos
     const [todos, setTodos] = useState([]);
+
+    // State for controlling list refresh
+    const [refreshList, setRefreshList] = useState(false);
+    useEffect(() => {
+        if (refreshList) {
+            getTodos();
+            setRefreshList(false);
+        }
+    });
 
     // handles fetching the todos
     // 'fetch()' defaults to GET requests so don't need to specify options
@@ -105,12 +115,20 @@ export function ListTodos() {
                 {/* Table elements */}
                 {todos.map(todo => {
                     return (
-                        <tr id={todo.id}>
+                        <tr id={todo.id} key={todo.id}>
                             <td>{todo.description}</td>
                             <td>{todoStatusString(todo.status)}</td>
                             {/* 'edit' and 'delete' will eventually be buttons, are table data for mapping out data */}
-                            <td>Edit</td>
-                            <td><button className="btn btn-danger" onClick={() => handleDeleteTodo(todo.id)} >Delete</button></td>
+                            <td>
+                                <EditTodo todo={todo} setRefreshList={setRefreshList}/>
+                            </td>
+                            <td>
+                                <button 
+                                    className="btn btn-danger" 
+                                    onClick={() => handleDeleteTodo(todo.id)} >
+                                        Delete
+                                </button>
+                            </td>
                         </tr>
                     )
                 })}

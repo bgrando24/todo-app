@@ -26,13 +26,13 @@ app.post("/todos", async (req, res) => {
 
         // Get data from client side to put into db -> use the req.body
         // req.body will send the JSON data we can use
-        const {description} = req.body;
+        const {description, status} = req.body;
 
         // adds new todo AND returns all todos
-        const newTodo = await pool.query(`INSERT INTO perntodo (description, status) VALUES ('${description}', 'NEW') RETURNING *`);
+        const newTodo = await pool.query(`INSERT INTO perntodo (description, status) VALUES ('${description}', '${status}') RETURNING *`);
 
         // Logging outcome
-        console.log(`Added new todo to database: "${description}"`);
+        console.log(`Added new todo to database: "${description}"\nStatus: ${status}`);
 
         // return the new todo as JSON
         res.json(newTodo.rows[0]);
@@ -47,8 +47,9 @@ app.post("/todos", async (req, res) => {
 app.get('/todos', async (req, res) => {
     try{
 
-        const allTodos = await pool.query('SELECT * FROM perntodo');
+        const allTodos = await pool.query('SELECT * FROM perntodo ORDER BY id ASC');
         res.json(allTodos.rows);    //returns json array with all todos
+        console.log('All todos queried');
 
     } catch(e) {
         console.error(e.message);
@@ -72,9 +73,11 @@ app.get('/todos/:id', async(req, res) => {
 // update a todo -> U
 app.put('/todos/:id', async(req, res) => {
     try {
+        const {description, status} = req.body;
 
-        const updatedTodo = await pool.query(`UPDATE perntodo SET description = ${req.body.description}, status = ${req.body.status} WHERE id = ${req.params.id}`);
+        const updatedTodo = await pool.query(`UPDATE perntodo SET description = '${description}', status = '${status}' WHERE id = ${req.params.id}`);
         res.json("Todo was updated");
+        console.log(`Todo was updated to: "${description}"\nStatus: ${status}`);
 
     } catch (e) {
         console.error(e.message);
