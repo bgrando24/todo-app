@@ -21,9 +21,27 @@ export function ListTodos() {
             console.log(jsonData);
 
         } catch (e) {
-            console.log(e.message);
+            console.error(e.message);
         }
     }
+
+
+    // Handles deleting a todo by using the ID value
+    const handleDeleteTodo = async (id) => {
+        try {
+
+            const deleteRequest = await fetch(`http://localhost:5000/todos/${id}`, {
+                method: "DELETE"
+            });
+
+            //removes the todo that has been deleted, rather than refrshing whole page
+            setTodos(todos.filter(todo => todo.id !== id));
+            
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
+
 
 
     // Converts the 'status' of the todo to an appropriate string for display
@@ -92,7 +110,7 @@ export function ListTodos() {
                             <td>{todoStatusString(todo.status)}</td>
                             {/* 'edit' and 'delete' will eventually be buttons, are table data for mapping out data */}
                             <td>Edit</td>
-                            <td>Delete</td>
+                            <td><button className="btn btn-danger" onClick={() => handleDeleteTodo(todo.id)} >Delete</button></td>
                         </tr>
                     )
                 })}
