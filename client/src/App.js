@@ -2,17 +2,32 @@ import './App.css';
 import { Fragment } from 'react';
 
 // Components
-import { InputTodo } from './components/InputTodo';
-import { ListTodos } from './components/ListTodos';
+import { InputTodo } from './todo-components/InputTodo';
+import { ListTodos } from './todo-components/ListTodos';
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Todos } from './Todo';
+import { Login } from './login-components/Login.js';
 
 function App() {
   return (
     <Fragment>
 
-      <div className='container'>
-        <InputTodo />
-        <ListTodos />
-      </div>
+      <Router>
+
+      <Routes>
+
+        <Route exact path={'/'} element={
+        <div className='container'>
+          <Login />
+        </div>
+        } />
+
+        <Route exact path='/todos' element={<Todos />} />
+
+      </Routes>
+
+      </Router>
      
 
     </Fragment>

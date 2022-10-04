@@ -3,9 +3,15 @@ const app = express();
 const cors = require('cors');
 const pool = require('./database');
 
+// authenitcation with passport -> https://www.youtube.com/watch?v=IUw_TgRhTBE
+const passport = require('passport');
+const passportLocal = require('passport-local').Strategy;
+const cookieParser = require('cookie-parser'); //For parsing cookies we use for session
+const bcrypt = require('bcryptjs'); //hashes the user passwords
+const expressSession = require('express-session'); //sessions for persistant login
+const bodyParser = require('body-parser');
 
-// middleware
-app.use(cors());
+
 
 // Anytime we're building fullstack, we need to get data from client side
     // To get this data, we use the req.body object
@@ -13,7 +19,55 @@ app.use(express.json());    //this gives us access to req.body and the json data
 
 
 
-// ###ROUTES### //
+// middleware
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}));
+
+// middleware specific to passport auth
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+// session
+app.use(expressSession({
+    secret: "secretcode",
+    resave: true,
+    saveUninitialized: true
+}));
+
+app.use(cookieParser("secretcode"));    //note same 'secret' value found in express session
+
+
+
+
+// ###LOGIN ROUTES###
+// test_users (id (serial), name, email, password)
+
+// handles logging in
+app.post('/login', (req, res) => {
+    console.log(req.body);
+});
+
+
+// handles registering a user
+app.post('/register', (req, res) => {
+    console.log(req.body);
+});
+
+
+// handles getting user info
+app.get('/user', (req, res) => {
+    console.log(req.body);
+});
+
+
+
+
+
+
+
+// ###TODOS ROUTES### //
 
 // test route
 app.get('/', (req, res) => {
