@@ -49,12 +49,12 @@ export function EditTodo( {todo, setRefreshList} ) {
                 Edit
             </button>
 
-            <div className="modal fade" id={`id${todo.id}`} onClick={() => setDescription(todo.description)}>
+            <div className="modal fade" id={`id${todo.id}`} >
                 <div className="modal-dialog">
                     <div className="modal-content">
 
                     <div className="modal-header">
-                        <h4 className="modal-title">Modal Heading</h4>
+                        <h4 className="modal-title">Edit Todo</h4>
                         <button type="button" className="close" data-dismiss="modal" onClick={() => setDescription(todo.description)}>
                             &times; 
                         </button>

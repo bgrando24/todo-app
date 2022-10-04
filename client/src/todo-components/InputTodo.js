@@ -24,7 +24,7 @@ export function InputTodo() {
             });
 
             // once new todo is sent, refresh to show updated todo list
-            window.location = "/";
+            window.location = "/todos";
 
         } catch (e) {
             console.error(e.message);
