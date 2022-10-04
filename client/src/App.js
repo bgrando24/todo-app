@@ -10,10 +10,13 @@ import { Todos } from './Todo';
 import { Login } from './login-components/Login.js';
 import { Register } from './login-components/Register';
 import { Home } from './Home';
+import { Navbar } from './Navbar';
 
 function App() {
   return (
     <Fragment>
+
+      <Navbar />
 
       <Router>
 
