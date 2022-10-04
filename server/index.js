@@ -19,6 +19,7 @@ app.use(express.json());    //this gives us access to req.body and the json data
 
 
 
+
 // middleware
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -45,14 +46,60 @@ app.use(cookieParser("secretcode"));    //note same 'secret' value found in expr
 // test_users (id (serial), name, email, password)
 
 // handles logging in
-app.post('/login', (req, res) => {
-    console.log(req.body);
+app.post('/login', async (req, res) => {
+    
+    const {email, password} = req.body;
+    console.log(`Login attempt for email ${email} and password ${password}`);
+
+    try {
+        
+        const loginQuery = await pool.query(`SELECT * FROM test_users WHERE email ='${email}'`);
+
+        if (!loginQuery.rows[0]) {
+            res.json({status: "fail", message: "Email not found"});
+        }
+
+        // Compares the provided login password and the hashed pw from the database
+        // 'res' is the outcome of the comparison, boolean value
+        await bcrypt.compare(password, loginQuery.rows[0].password, (err, result) => {
+            if (err) {
+                console.error(err.message);
+            }
+
+            if (result) {
+                console.log("Login successful");
+                res.json({status: "ok"});
+
+            } else {
+                console.log("Login failed: Password not recognised by bcrypt");
+                res.json({status: "fail", message: "Password not recognised"});
+            }
+        });
+
+    } catch (e) {
+        console.error(e.message);
+    }
 });
 
 
 // handles registering a user
-app.post('/register', (req, res) => {
-    console.log(req.body);
+app.post('/register', async (req, res) => {
+    const {name, email, password} = req.body;
+    console.log(`Received POST request for new user\nName: ${name}\nEmail: ${email}\nPassword: ${password}`);
+
+    try {
+        //using bcrypt to hash the password -> 10 rounds of encrypting
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+        const registerQuery = await pool.query(`INSERT INTO test_users (name, email, password) VALUES ('${name}', '${email}', '${hashedPassword}')`);
+
+
+        // tells client was successful
+        res.json({status: "ok"});
+
+    } catch (e) {
+        console.error(e.message);
+    }
 });
 
 

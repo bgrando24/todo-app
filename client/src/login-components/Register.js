@@ -1,39 +1,34 @@
 import React, { Fragment, useState } from "react";
 
-export function Login() {
+export function Register() {
 
-    // state to control storing the user's inputs for email and password used for login
+    // state to control storing the user's inputs for name, email and password
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    // State to hold the login failed message
-    const [loginError, setLoginError] = useState('');
+    // handles sending the registration data once form is submitted
+    const handleSubmitRegistration = async (event) => {
 
-    // handles sending the login once form is submitted
-    const handleSubmitLogin = async (event) => {
+        // deconstructiong body object ot send with request (stores the user registration data)
+        const body = {name, email, password};
         
         event.preventDefault();
-
-        // deconstructiong body object ot send with request (stores the user login data)
-        const body = {email, password};
         
         try {
             
-            const loginRequest = await fetch('http://localhost:5000/login', {
+            const registrationRequest = await fetch('http://localhost:5000/register', {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body)
             });
 
-            const response = await loginRequest.json();
+            const response = await registrationRequest.json();
             console.log(response);
             
-            // if it's 'ok', login was successful
             if (response.status == "ok") {
-                window.location = '/todos';
+                window.location = '/login';
             }
-
-        setLoginError(response.message);
 
         } catch (e) {
             console.error(e.message);
@@ -43,11 +38,15 @@ export function Login() {
     return (
         <div className="d-flex-column"> 
 
-            <h1 className="text-center mt-5">Login</h1>
+            <h1 className="text-center mt-5">Register</h1>
 
-            <p className="alert alert-danger text-center" style={{visibility: loginError ? 'visible': 'hidden'}}>{loginError}</p>
-
-            <form className="d-flex-column" onSubmit={handleSubmitLogin}>
+            <form className="d-flex-column" onSubmit={handleSubmitRegistration}>
+                <input 
+                    className="form-control mt-2" 
+                    placeholder="Name" 
+                    value={name} 
+                    onChange={e => setName(e.target.value)}
+                />
                 <input
                     type='email' 
                     className="form-control mt-2" 
@@ -65,7 +64,7 @@ export function Login() {
                 <button type='submit'>Submit</button>
             </form>
 
-            <a href='/register'>Register</a>
+            <a href='/login'>Login</a>
 
         </div>
     )
