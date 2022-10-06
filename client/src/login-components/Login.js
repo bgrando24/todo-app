@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { checkLogin } from "../Utilities";
 
 export function Login() {
 
@@ -17,21 +18,15 @@ export function Login() {
 
 
     // Handles checking if the user is already logged in, currently in testing
-    const handleCheckLogin = async(event) => {
+    const handleCheckLogin = async() => {
         try {
             
-            // event.preventDefault();
-            console.log('Sending check login request...');
-
-            const loginCheckRequest = await fetch('http://localhost:5000/login', {
-                method: "GET",
-                credentials: 'include'
-            });
-            const response = await loginCheckRequest.json();
-            console.log(response.message);
+            const response = await checkLogin('http://localhost:5000/login');
 
             if (response.status == "ok") {
                 window.location = '/todos';
+            } else {
+                console.log(response);
             }
 
         } catch (e) {
@@ -93,11 +88,17 @@ export function Login() {
                     onChange={e => setPassword(e.target.value)}
                 />
 
-                <button type='submit'>Submit</button>
-            </form>
+                <div className="container d-flex flex-column justify-content-center">
+                    <button className="btn btn-primary mt-5" type='submit'>Submit</button>
 
-            <a href='/register'>Register</a>
-            <button className="btn btn-secondary" onClick={handleCheckLogin}>Check login</button>
+                    <div className="mx-auto">
+                        <button className="btn btn-secondary mt-5" ><a className="text-light" href='/register'>Register</a></button>
+                    </div>
+
+                </div>
+
+            </form>
+            {/* <button className="btn btn-secondary" onClick={handleCheckLogin}>Check login</button> */}
 
         </div>
     )

@@ -1,5 +1,5 @@
 import './App.css';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 
 // Components
 import { InputTodo } from './todo-components/InputTodo';
@@ -12,7 +12,9 @@ import { Register } from './login-components/Register';
 import { Home } from './Home';
 import { Navbar } from './Navbar';
 
+
 function App() {
+
   return (
     <Fragment>
 
