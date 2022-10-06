@@ -1,43 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { checkLogin } from "./Utilities";
 
 // Contains the links to display in the navbar
 const loggedinNavbarLinks = [
-    {name: "", link: ""},
-    {name: "", link: ""},
-    {name: "", link: ""},
+    {name: "Home", link: "/"},
+    {name: "Todos", link: "/todos"},
+    {name: "Logout", link: "/logout"},
 ];
 
 const notLoggedinNavbarLinks = [
-    {name: "", link: ""},
-    {name: "", link: ""},
-    {name: "", link: ""},
+    {name: "Home", link: "/"},
+    {name: "Login", link: "/login"},
+    {name: "Register", link: "/register"},
 ]
 
 export function Navbar() {
 
-    //  // Checks if the user is already logged in or mounting of the login page
-    //  useEffect(() => {
-    //     handleCheckLogin();
-    // }, []);
+    // state to control which version of the navbar is displayed
+    const [nav, setNav] = useState(false);
+
+     // Checks if the user is already logged in or mounting of the login page
+     useEffect(() => {
+        handleCheckLogin();
+    }, []);
 
 
     // Handles checking if the user is already logged in, to determine what should display on the navbar
-    const handleCheckLogin = async(event) => {
+    const handleCheckLogin = async() => {
         try {
             
-            // event.preventDefault();
-            console.log('Sending check login request...');
+            const result = await checkLogin('http://localhost:5000/login');
 
-            const loginCheckRequest = await fetch('http://localhost:5000/login', {
-                method: "GET",
-                credentials: 'include'
-            });
-            const response = await loginCheckRequest.json();
-            console.log(response.message);
-
-            if (response.status == "ok") {
-                window.location = '/todos';
+            if (result.status == 'ok') {
+                console.log("Navbar status loggedin");
+                return setNav(true);
             }
+
+            console.log("Navbar status NOT loggedin");
+            setNav(false);
 
         } catch (e) {
             console.error(e.message);
@@ -52,7 +52,19 @@ export function Navbar() {
 
         <ul className="navbar-nav">
 
-            <li className="nav-item">
+            {
+                (nav ? loggedinNavbarLinks : notLoggedinNavbarLinks).map(
+                    (nav, i) => {
+                        return (
+                            <li key={i} className="nav-item">
+                            <a className="nav-link text-light" href={nav.link}>{nav.name}</a>
+                            </li>
+                        )
+                    }
+                )
+            }
+
+            {/* <li className="nav-item">
             <a className="nav-link text-light" href="/">Home</a>
             </li>
 
@@ -62,7 +74,7 @@ export function Navbar() {
 
             <li className="nav-item">
             <a className="nav-link text-light" href="/login">Login</a>
-            </li>
+            </li> */}
 
         </ul>
 
