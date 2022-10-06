@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 export function Login() {
 
@@ -8,6 +8,36 @@ export function Login() {
 
     // State to hold the login failed message
     const [loginError, setLoginError] = useState('');
+
+
+    // Checks if the user is already logged in or mounting of the login page
+    useEffect(() => {
+        handleCheckLogin();
+    }, []);
+
+
+    // Handles checking if the user is already logged in, currently in testing
+    const handleCheckLogin = async(event) => {
+        try {
+            
+            // event.preventDefault();
+            console.log('Sending check login request...');
+
+            const loginCheckRequest = await fetch('http://localhost:5000/login', {
+                method: "GET",
+                credentials: 'include'
+            });
+            const response = await loginCheckRequest.json();
+            console.log(response.message);
+
+            if (response.status == "ok") {
+                window.location = '/todos';
+            }
+
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
 
     // handles sending the login once form is submitted
     const handleSubmitLogin = async (event) => {
@@ -21,6 +51,7 @@ export function Login() {
             
             const loginRequest = await fetch('http://localhost:5000/login', {
                 method: "POST",
+                credentials: 'include',
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body)
             });
@@ -66,6 +97,7 @@ export function Login() {
             </form>
 
             <a href='/register'>Register</a>
+            <button className="btn btn-secondary" onClick={handleCheckLogin}>Check login</button>
 
         </div>
     )

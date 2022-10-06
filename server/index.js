@@ -20,9 +20,10 @@ app.use(express.json());    //this gives us access to req.body and the json data
 
 
 
-// middleware
+// MIDDLEWARE SECTION //
 app.use(cors({
     origin: 'http://localhost:3000',
+    methods: ["GET", "PUT", "POST", "DELETE", "HEAD", "OPTIONS"],
     credentials: true
 }));
 
@@ -30,14 +31,25 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+const tenSec = 1000 * 10;
+
 // session
 app.use(expressSession({
     secret: "secretcode",
-    resave: true,
-    saveUninitialized: true
+    resave: false,
+    saveUninitialized: true,
+    cookie: {httpOnly: true, secure: false, maxAge: tenSec}
 }));
 
 app.use(cookieParser("secretcode"));    //note same 'secret' value found in express session
+
+
+
+// USING EXPRESS SESSION ARTICLE
+// https://www.section.io/engineering-education/session-management-in-nodejs-using-expressjs-and-express-session/
+
+
+
 
 
 
@@ -45,9 +57,27 @@ app.use(cookieParser("secretcode"));    //note same 'secret' value found in expr
 // ###LOGIN ROUTES###
 // test_users (id (serial), name, email, password)
 
+
+// Handles checking if the user is already logged in via an existing session
+app.get('/login', (req ,res) => {
+    // Checking if user is already logged in via session
+    try {
+            if (req.session.user.id) {
+            console.log("User already logged in, redirecting...");
+            res.json({status: "ok", message: "User logged in"});
+            } 
+
+    } catch (e) {
+
+        console.error(e.message);
+         res.json({status: "fail", message: "User NOT logged in"});
+    }
+    
+});
+
 // handles logging in
 app.post('/login', async (req, res) => {
-    
+
     const {email, password} = req.body;
     console.log(`Login attempt for email ${email} and password ${password}`);
 
@@ -66,10 +96,25 @@ app.post('/login', async (req, res) => {
                 console.error(err.message);
             }
 
+            // Passwords match
             if (result) {
                 console.log("Login successful");
+
+                // express session 
+                // user object for the session
+                const sessionUser = {
+                    id: loginQuery.rows[0].id,
+                    name: loginQuery.rows[0].name,
+                    email: loginQuery.rows[0].email
+                };
+
+                console.log("Setting user session");
+                req.session.user = sessionUser;
+                console.log(req.session);
+
                 res.json({status: "ok"});
 
+            // Passwords do not match
             } else {
                 console.log("Login failed: Password not recognised by bcrypt");
                 res.json({status: "fail", message: "Password not recognised"});
