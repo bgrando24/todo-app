@@ -56,10 +56,10 @@ export function InputTodo({ user }) {
         <Fragment>
             <h1 className="text-center mt-5">Welcome {user.name}</h1>
             <h2 className="text-center mt-3">Expiry: {caclulateExpiry(user.expiry)} minutes</h2>
-            <form className="d-flex mt-5" onSubmit={handleSubmitForm}>
+            <form className="d-flex flex-column mt-5" onSubmit={handleSubmitForm}>
                 <input type="text" className="form-control" value={description} onChange={e => setDescription(e.target.value)} placeholder="Add a new todo..."/>
 
-                <div className="dropdown mt-2">
+                <div className="dropdown mt-2 mx-auto">
                             <select className="text-center" name="status" value={status} onChange={e => setStatus(e.target.value)}>
                                 <option 
                                     value="NEW">
@@ -80,7 +80,7 @@ export function InputTodo({ user }) {
                             </select>
                         </div>
 
-                <button className="btn btn-success">Add</button>
+                <button className="btn btn-success mt-2 mx-auto px-5">Add</button>
             </form>
         </Fragment>
     )

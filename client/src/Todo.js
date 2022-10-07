@@ -14,6 +14,11 @@ export function Todos() {
   // state to store the session user's data
   const [user, setUser] = useState({});
 
+//   state to globally check user is still logged in (specifically that the session isn't expired)
+  const [globalCheck, setGlobalCheck] = useState(false);
+
+
+
   // handles checking if the user is logged in before allowing access
   const handleCheckLogin = async() => {
     try {
@@ -36,6 +41,9 @@ export function Todos() {
   }
 
 
+
+
+
   // Get's the user's data from the session
   const getUserData = async() => {
     const dataRequest = await fetch('/http://localhost:5000/user');
@@ -45,22 +53,29 @@ export function Todos() {
   useEffect( () => {
     handleCheckLogin();
     getUserData();
-  }, []);
+  }, [globalCheck]);
 
   return (
-    loadTodos ? <LoadTodos user={ user }/> : <NotLoadedTodos />
+    loadTodos ? <LoadTodos user={ user } setGlobalCheck={setGlobalCheck} globalCheck={globalCheck}/> : <NotLoadedTodos />
   );
   
 }
 
 
-function LoadTodos({ user }) {
+function LoadTodos({ user, setGlobalCheck, globalCheck}) {
+
+    //   used to trigger a state change in globalCheck which ultimately checks the user is still logged in
+    const handleGlobalCheck = () => {
+        console.log('global check triggered');
+        setGlobalCheck(!globalCheck);
+    }
+
   return (
     <Fragment>
 
-      <div className='container'>
+      <div className='container' style={{height: '100vh'}} onClick={handleGlobalCheck}>
         <InputTodo user={ user }/>
-        <ListTodos />
+        <ListTodos user={ user }/>
       </div>
 
     </Fragment>

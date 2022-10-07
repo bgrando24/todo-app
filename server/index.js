@@ -193,10 +193,10 @@ app.post("/todos", async (req, res) => {
 
         // Get data from client side to put into db -> use the req.body
         // req.body will send the JSON data we can use
-        const {description, status} = req.body;
+        const {description, status, user} = req.body;
 
         // adds new todo AND returns all todos
-        const newTodo = await pool.query(`INSERT INTO perntodo (description, status) VALUES ('${description}', '${status}') RETURNING *`);
+        const newTodo = await pool.query(`INSERT INTO perntodo (description, status, username, userId) VALUES ('${description}', '${status}', '${user.name}', ${user.id}) RETURNING *`);
 
         // Logging outcome
         console.log(`Added new todo to database: "${description}"\nStatus: ${status}`);
@@ -214,9 +214,25 @@ app.post("/todos", async (req, res) => {
 app.get('/todos', async (req, res) => {
     try{
 
-        const allTodos = await pool.query('SELECT * FROM perntodo ORDER BY id ASC');
+        const allTodos = await pool.query(`SELECT * FROM perntodo ORDER BY id ASC`);
         res.json(allTodos.rows);    //returns json array with all todos
         console.log('All todos queried');
+
+    } catch(e) {
+        console.error(e.message);
+    }
+});
+
+
+// get todos from certain user -> R
+    // note 'post' is used here as GET requests cannot have a body
+app.post('/user-todos', async (req, res) => {
+    try{
+        const {user} = req.body;
+        // console.log(user);
+        const allTodos = await pool.query(`SELECT * FROM perntodo WHERE userid=${user.id} ORDER BY id ASC`);
+        res.json(allTodos.rows);
+        console.log(`User ${user.name} todos queried`);
 
     } catch(e) {
         console.error(e.message);

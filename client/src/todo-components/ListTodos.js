@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { EditTodo } from "./EditTodo";
 
-export function ListTodos() {
+export function ListTodos({ user }) {
 
     // component state for storing fetched todos
     const [todos, setTodos] = useState([]);
@@ -20,7 +20,13 @@ export function ListTodos() {
     const getTodos = async() => {
         try {
 
-            const response = await fetch('http://localhost:5000/todos');
+            const body = {user};
+
+            const response = await fetch('http://localhost:5000/user-todos', {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(body)
+            });
 
             // We receive JSON data back, need to handle it
             const jsonData = await response.json();   //parsing JSON, need await
@@ -91,6 +97,9 @@ export function ListTodos() {
 
     return (
         <Fragment>
+
+        {todos.length == 0 ? <p className="text-center mt-4">There seems to be nothing here!</p> :
+
             <table className="table mt-5 text-center">
                 <thead>
 
@@ -98,6 +107,8 @@ export function ListTodos() {
                 <tr>
                     <th>Description</th>
                     <th>Status</th>
+                    <th>User</th>
+                    <th>User ID</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -118,6 +129,8 @@ export function ListTodos() {
                         <tr id={todo.id} key={todo.id}>
                             <td>{todo.description}</td>
                             <td>{todoStatusString(todo.status)}</td>
+                            <td>{todo.username}</td>
+                            <td>{todo.userid}</td>
                             {/* 'edit' and 'delete' will eventually be buttons, are table data for mapping out data */}
                             <td>
                                 <EditTodo todo={todo} setRefreshList={setRefreshList}/>
@@ -134,6 +147,7 @@ export function ListTodos() {
                 })}
                 </tbody>
             </table>
+        }
         </Fragment>
     )
 }
