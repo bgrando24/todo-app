@@ -148,12 +148,18 @@ app.post('/register', async (req, res) => {
 });
 
 
-// handles getting user info
-app.get('/user', (req, res) => {
-    console.log(req.body);
+// Logs a user out by ending the session
+app.get('/logout', (req,res) => {
+    req.session.destroy(() => console.log(req.session));
+    console.log("Session should be destroyed");
 });
 
 
+
+// handles getting session user's data
+app.get('/user', (req, res) => {
+    res.send(req.session);
+})
 
 
 

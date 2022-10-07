@@ -11,6 +11,7 @@ import { Login } from './login-components/Login.js';
 import { Register } from './login-components/Register';
 import { Home } from './Home';
 import { Navbar } from './Navbar';
+import { Logout } from './Logout';
 
 
 function App() {
@@ -35,6 +36,12 @@ function App() {
         <Route exact path={'/register'} element={
           <div className='container'>
             <Register />
+          </div>
+        } />
+
+        <Route exact path={'/logout'} element={
+          <div className='container'>
+            <Logout />
           </div>
         } />
 
