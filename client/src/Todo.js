@@ -21,8 +21,9 @@ export function Todos() {
         const result = await checkLogin('http://localhost:5000/login');
 
         if (result.status == 'ok') {
-          setLoadTodos(true);
-          return;
+            setUser(result.session.user);
+            setLoadTodos(true);
+            return;
 
         } else {
           console.log(result);
@@ -47,18 +48,18 @@ export function Todos() {
   }, []);
 
   return (
-    loadTodos ? <LoadTodos /> : <NotLoadedTodos />
+    loadTodos ? <LoadTodos user={ user }/> : <NotLoadedTodos />
   );
   
 }
 
 
-function LoadTodos() {
+function LoadTodos({ user }) {
   return (
     <Fragment>
 
       <div className='container'>
-        <InputTodo />
+        <InputTodo user={ user }/>
         <ListTodos />
       </div>
 

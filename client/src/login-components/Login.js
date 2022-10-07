@@ -23,13 +23,15 @@ export function Login() {
             
             const response = await checkLogin('http://localhost:5000/login');
 
-            if (response.status == "ok") {
-                window.location = '/todos';
+            if (await response.status == "ok") {
+                console.log(response.session.user);
+                // window.location = '/todos';
             } else {
                 console.log(response);
-            }
+                console.log("Session not found");
+                }
+            } catch (e) {
 
-        } catch (e) {
             console.error(e.message);
         }
     }
@@ -98,7 +100,7 @@ export function Login() {
                 </div>
 
             </form>
-            {/* <button className="btn btn-secondary" onClick={handleCheckLogin}>Check login</button> */}
+            <button className="btn btn-secondary" onClick={handleCheckLogin}>Check login</button>
 
         </div>
     )

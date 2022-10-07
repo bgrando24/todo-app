@@ -64,7 +64,8 @@ app.get('/login', (req ,res) => {
     try {
             if (req.session.user.id) {
             console.log("User already logged in, redirecting...");
-            res.json({status: "ok", message: "User logged in"});
+            // console.log(req.session);
+            res.json({status: "ok", message: "User logged in", session: req.session});
             } 
 
     } catch (e) {
@@ -149,9 +150,21 @@ app.post('/register', async (req, res) => {
 
 
 // Logs a user out by ending the session
-app.get('/logout', (req,res) => {
-    req.session.destroy(() => console.log(req.session));
-    console.log("Session should be destroyed");
+app.delete('/logout', (req,res) => {
+    if (req.session) {
+        req.session.destroy(err => {
+            if (err) {
+                res.status(500).json({status: "failed"});
+            } else {
+                console.log("Session should be destroyed");
+                res.json({status: "destroyed"});
+            }
+        });
+
+    } else {
+        console.error("Session not found in logout route");
+    }
+    
 });
 
 

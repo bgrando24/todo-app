@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
+import { useReducedMotion } from "react-spring";
 
-export function InputTodo() {
+export function InputTodo({ user }) {
 
     const [description, setDescription] = useState('');
     const [status, setStatus] = useState('NEW');
@@ -33,7 +34,7 @@ export function InputTodo() {
 
     return (
         <Fragment>
-            <h1 className="text-center mt-5">PERN Todo List</h1>
+            <h1 className="text-center mt-5">Welcome {user.name}</h1>
             <form className="d-flex mt-5" onSubmit={handleSubmitForm}>
                 <input type="text" className="form-control" value={description} onChange={e => setDescription(e.target.value)} placeholder="Add a new todo..."/>
 
