@@ -32,13 +32,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 const tenSec = 1000 * 10;
+const fiveMin = 1000 * 60 * 5;
 
 // session
 app.use(expressSession({
     secret: "secretcode",
     resave: false,
     saveUninitialized: true,
-    cookie: {httpOnly: true, secure: false, maxAge: tenSec}
+    cookie: {httpOnly: true, secure: false, maxAge: fiveMin}
 }));
 
 app.use(cookieParser("secretcode"));    //note same 'secret' value found in express session
@@ -106,7 +107,8 @@ app.post('/login', async (req, res) => {
                 const sessionUser = {
                     id: loginQuery.rows[0].id,
                     name: loginQuery.rows[0].name,
-                    email: loginQuery.rows[0].email
+                    email: loginQuery.rows[0].email,
+                    expiry: req.session.cookie._expires
                 };
 
                 console.log("Setting user session");

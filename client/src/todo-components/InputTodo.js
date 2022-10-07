@@ -1,5 +1,11 @@
-import React, { Fragment, useState } from "react";
-import { useReducedMotion } from "react-spring";
+import React, { Fragment, useEffect, useState } from "react";
+
+
+/*
+    Note that the deconstructed user object is received from the Todos component.
+    The Todos component checks the user is logged in before providing access.
+    If logged in, provides access and passes the user details through a prop to here.
+*/
 
 export function InputTodo({ user }) {
 
@@ -14,7 +20,7 @@ export function InputTodo({ user }) {
 
         try {
 
-            const body = {description, status};
+            const body = {description, status, user};
             const response = await fetch('http://localhost:5000/todos', {
                 // http method
                 method: "POST",
@@ -32,9 +38,24 @@ export function InputTodo({ user }) {
         }
     }
 
+    useEffect(() => {
+        caclulateExpiry(user.expiry);
+    });
+
+    // for debugging - cacluates how long user has until session expires
+    const caclulateExpiry = (expiryEnd) => {
+        let currentTime = new Date();
+        let expireTime = new Date(expiryEnd);
+        let minutes = (expireTime - currentTime) / (1000 * 60);
+        console.log(minutes);
+        return Math.round(minutes * 10) / 10;
+    }
+
+
     return (
         <Fragment>
             <h1 className="text-center mt-5">Welcome {user.name}</h1>
+            <h2 className="text-center mt-3">Expiry: {caclulateExpiry(user.expiry)} minutes</h2>
             <form className="d-flex mt-5" onSubmit={handleSubmitForm}>
                 <input type="text" className="form-control" value={description} onChange={e => setDescription(e.target.value)} placeholder="Add a new todo..."/>
 

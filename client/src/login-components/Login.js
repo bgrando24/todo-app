@@ -25,7 +25,7 @@ export function Login() {
 
             if (await response.status == "ok") {
                 console.log(response.session.user);
-                // window.location = '/todos';
+                window.location = '/todos';
             } else {
                 console.log(response);
                 console.log("Session not found");
@@ -100,7 +100,7 @@ export function Login() {
                 </div>
 
             </form>
-            <button className="btn btn-secondary" onClick={handleCheckLogin}>Check login</button>
+            {/* <button className="btn btn-secondary" onClick={handleCheckLogin}>Check login</button> */}
 
         </div>
     )
