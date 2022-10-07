@@ -64,14 +64,16 @@ export function Navbar() {
                 )
             }
 
+            <li className="nav-item">
+                <a href='/account' className="nav-link text-light">Account</a>
+            </li>
+
             {/* <li className="nav-item">
             <a className="nav-link text-light" href="/">Home</a>
             </li>
-
             <li className="nav-item">
             <a className="nav-link text-light" href="/todos">Todos</a>
             </li>
-
             <li className="nav-item">
             <a className="nav-link text-light" href="/login">Login</a>
             </li> */}

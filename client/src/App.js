@@ -12,6 +12,7 @@ import { Register } from './login-components/Register';
 import { Home } from './Home';
 import { Navbar } from './Navbar';
 import { Logout } from './Logout';
+import { UserAccount } from './UserAccount';
 
 
 function App() {
@@ -46,6 +47,8 @@ function App() {
         } />
 
         <Route exact path='/todos' element={<Todos />} />
+
+        <Route exact path='/account' element={<UserAccount />} />
 
       </Routes>
 
