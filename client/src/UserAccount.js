@@ -38,9 +38,9 @@ export function UserAccount() {
   return (
     <div className="container d-flex flex-column text-center mt-5">
         <h1>Welcome {user.name}</h1>
-        <h5 className="mt-3">Your account</h5>
-        <p>ID: {user.id}</p>
-        <p>Email: {user.email}</p>
+        <h5 className="mt-1">Your account</h5>
+        <p className="mt-2 font-weight-bold">User ID: {user.id}</p>
+        <p className="mt-2 font-weight-bold">Email: {user.email}</p>
     </div>
   )
 }
