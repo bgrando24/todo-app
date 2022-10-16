@@ -60,8 +60,15 @@ export function Register() {
                     value={password} 
                     onChange={e => setPassword(e.target.value)}
                 />
+                <div className="container d-flex flex-column justify-content-center">
+                    <button className="btn btn-primary mt-5" type='submit'>Register</button>
+                
+                    <div className="mx-auto">
+                        <button className="btn btn-secondary mt-5" ><a className="text-light" href='/login'>Login</a></button>
+                    </div>
 
-                <button type='submit'>Submit</button>
+                </div>
+                
             </form>
 
             <a href='/login'>Login</a>
