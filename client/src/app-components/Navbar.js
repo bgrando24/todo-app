@@ -65,7 +65,7 @@ export function Navbar() {
             }
 
             <li className="nav-item">
-                <a href='/account' className="nav-link text-light">Account</a>
+                <a href='/about' className="nav-link text-light">About</a>
             </li>
 
             {/* <li className="nav-item">

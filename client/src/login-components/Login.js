@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { checkLogin } from "../Utilities";
+import { checkLogin } from "../app-components/Utilities";
 
 export function Login() {
 

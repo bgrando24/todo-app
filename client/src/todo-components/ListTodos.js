@@ -100,23 +100,29 @@ export function ListTodos({ user }) {
 
         {todos.length == 0 ? <p className="text-center mt-4">There seems to be nothing here!</p> :
 
-            <div className="mt-4">
+            <div className="my-4 pb-5">
                 {
                     todos.map( todo => {
                         return (
-                            <div className="container mx-auto my-1 border rounded">
+                            <div className="container mx-auto my-3 border rounded">
 
                                 <div className="d-flex">
                                     
-                                    <div className="d-flex flex-column align-items-center mt-2 w-50">
-                                    <h6 className="font-weight-bold">Description</h6>
-                                    <p>{todo.description}</p>
+                                    <div className="d-flex flex-wrap justify-content-around mt-2 w-50">
 
-                                    <h7 className="font-weight-bold">Status</h7>
-                                    <p>{todoStatusString(todo.status)}</p>
+                                        <div className="d-flex flex-column align-items-center">
+                                            <h6 className="font-weight-bold">Description</h6>
+                                            <p>{todo.description}</p>
+                                        </div>
+
+                                        <div className="d-flex flex-column align-items-center">
+                                            <h7 className="font-weight-bold">Status</h7>
+                                            <p>{todoStatusString(todo.status)}</p>
+                                        </div>
+
                                     </div>
 
-                                    <div className="d-flex justify-content-between align-items-center w-50 mt-3">
+                                    <div className="d-flex justify-content-around align-items-center w-50 mt-3">
                                     <EditTodo todo={todo} setRefreshList={setRefreshList}/>
                                     
                                     <button 

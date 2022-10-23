@@ -6,13 +6,13 @@ import { InputTodo } from './todo-components/InputTodo';
 import { ListTodos } from './todo-components/ListTodos';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Todos } from './Todo';
+import { Todos } from './app-components/Todo';
 import { Login } from './login-components/Login.js';
 import { Register } from './login-components/Register';
-import { Home } from './Home';
-import { Navbar } from './Navbar';
-import { Logout } from './Logout';
-import { UserAccount } from './UserAccount';
+import { Home } from './app-components/Home';
+import { Navbar } from './app-components/Navbar';
+import { Logout } from './app-components/Logout';
+import { About } from './app-components/About';
 
 
 function App() {
@@ -48,7 +48,7 @@ function App() {
 
         <Route exact path='/todos' element={<Todos />} />
 
-        <Route exact path='/account' element={<UserAccount />} />
+        <Route exact path='/about' element={<About />} />
 
       </Routes>
 

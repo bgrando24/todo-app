@@ -1,8 +1,8 @@
 import { Fragment, useEffect, useState } from 'react';
 
 // Components
-import { InputTodo } from './todo-components/InputTodo';
-import { ListTodos } from './todo-components/ListTodos';
+import { InputTodo } from '../todo-components/InputTodo';
+import { ListTodos } from '../todo-components/ListTodos';
 
 import { checkLogin } from './Utilities';
 
