@@ -100,54 +100,93 @@ export function ListTodos({ user }) {
 
         {todos.length == 0 ? <p className="text-center mt-4">There seems to be nothing here!</p> :
 
-            <table className="table mt-5 text-center">
-                <thead>
+            <div className="mt-4">
+                {
+                    todos.map( todo => {
+                        return (
+                            <div className="container mx-auto my-1 border rounded">
 
-                {/* Table headings */}
-                <tr>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>User</th>
-                    <th>User ID</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                </tr>
-                </thead>
+                                <div className="d-flex">
+                                    
+                                    <div className="d-flex flex-column align-items-center mt-2 w-50">
+                                    <h6 className="font-weight-bold">Description</h6>
+                                    <p>{todo.description}</p>
 
-                <tbody>
-                {/* FOR REFERENCE ONLY */}
-                {/* <tr>
-                    <td>Mary</td>
-                    <td>Moe</td>
-                    <td>mary@example.com</td>
-                </tr> */}
+                                    <h7 className="font-weight-bold">Status</h7>
+                                    <p>{todoStatusString(todo.status)}</p>
+                                    </div>
 
+                                    <div className="d-flex justify-content-between align-items-center w-50 mt-3">
+                                    <EditTodo todo={todo} setRefreshList={setRefreshList}/>
+                                    
+                                    <button 
+                                        className="btn btn-danger" 
+                                        onClick={() => handleDeleteTodo(todo.id)} >
+                                            Delete
+                                    </button>
 
-                {/* Table elements */}
-                {todos.map(todo => {
-                    return (
-                        <tr id={todo.id} key={todo.id}>
-                            <td>{todo.description}</td>
-                            <td>{todoStatusString(todo.status)}</td>
-                            <td>{todo.username}</td>
-                            <td>{todo.userid}</td>
-                            {/* 'edit' and 'delete' will eventually be buttons, are table data for mapping out data */}
-                            <td>
-                                <EditTodo todo={todo} setRefreshList={setRefreshList}/>
-                            </td>
-                            <td>
-                                <button 
-                                    className="btn btn-danger" 
-                                    onClick={() => handleDeleteTodo(todo.id)} >
-                                        Delete
-                                </button>
-                            </td>
-                        </tr>
-                    )
-                })}
-                </tbody>
-            </table>
+                                    </div>
+
+                                </div>
+                                
+                            </div>
+                        )
+                    })
+                }
+            </div>            
+
         }
         </Fragment>
     )
 }
+
+
+
+
+// {/* <table className="table mt-5 text-center">
+//                 <thead>
+
+//                 {/* Table headings */}
+//                 <tr>
+//                     <th>Description</th>
+//                     <th>Status</th>
+//                     <th>User</th>
+//                     <th>User ID</th>
+//                     <th>Edit</th>
+//                     <th>Delete</th>
+//                 </tr>
+//                 </thead>
+
+//                 <tbody>
+//                 {/* FOR REFERENCE ONLY */}
+//                 {/* <tr>
+//                     <td>Mary</td>
+//                     <td>Moe</td>
+//                     <td>mary@example.com</td>
+//                 </tr> */}
+
+
+//                 {/* Table elements */}
+//                 {todos.map(todo => {
+//                     return (
+//                         <tr id={todo.id} key={todo.id}>
+//                             <td>{todo.description}</td>
+//                             <td>{todoStatusString(todo.status)}</td>
+//                             <td>{todo.username}</td>
+//                             <td>{todo.userid}</td>
+//                             {/* 'edit' and 'delete' will eventually be buttons, are table data for mapping out data */}
+//                             <td>
+//                                 <EditTodo todo={todo} setRefreshList={setRefreshList}/>
+//                             </td>
+//                             <td>
+//                                 <button 
+//                                     className="btn btn-danger" 
+//                                     onClick={() => handleDeleteTodo(todo.id)} >
+//                                         Delete
+//                                 </button>
+//                             </td>
+//                         </tr>
+//                     )
+//                 })}
+//                 </tbody>
+//             </table> */}
