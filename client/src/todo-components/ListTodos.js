@@ -110,19 +110,19 @@ export function ListTodos({ user }) {
                                     
                                     <div className="d-flex flex-wrap justify-content-around mt-2 w-50">
 
-                                        <div className="d-flex flex-column align-items-center">
+                                        <div className="d-flex flex-column align-items-center w-75">
                                             <h6 className="font-weight-bold">Description</h6>
                                             <p>{todo.description}</p>
                                         </div>
 
                                         <div className="d-flex flex-column align-items-center">
-                                            <h7 className="font-weight-bold">Status</h7>
+                                            <h6 className="font-weight-bold">Status</h6>
                                             <p>{todoStatusString(todo.status)}</p>
                                         </div>
 
                                     </div>
 
-                                    <div className="d-flex justify-content-around align-items-center w-50 mt-3">
+                                    <div className="d-flex justify-content-around align-items-center w-50">
                                     <EditTodo todo={todo} setRefreshList={setRefreshList}/>
                                     
                                     <button 
