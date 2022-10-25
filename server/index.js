@@ -3,6 +3,12 @@ const app = express();
 const cors = require('cors');
 const pool = require('./database');
 
+
+// will load in all environment variables
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 // authenitcation with passport -> https://www.youtube.com/watch?v=IUw_TgRhTBE
 const passport = require('passport');
 const passportLocal = require('passport-local').Strategy;
@@ -36,7 +42,7 @@ const fiveMin = 1000 * 60 * 5;
 
 // session
 app.use(expressSession({
-    secret: "secretcode",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {httpOnly: true, secure: false, maxAge: fiveMin}
